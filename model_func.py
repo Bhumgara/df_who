@@ -4,8 +4,8 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.tools
 
-BAD_COLS = ['Infant_deaths', 'Economy_status_Developed', 'Economy_status_Developing', 'Country', 'Thinness_five_nine_years', 'Population_mln', 'Polio']
-SENSITIVE_COLS = ['Hepatitis_B', 'BMI', 'Incidents_HIV', 'Thinness_ten_nineteen_years', 'Diphtheria']
+BAD_COLS = ['Infant_deaths', 'Economy_status_Developing', 'Country', 'Thinness_five_nine_years', 'Polio']
+SENSITIVE_COLS = ["Under_five_deaths", "Adult_mortality", "Alcohol_consumption", "Hepatitis_B", "Measles", "BMI", "Diphtheria", "Incidents_HIV", "Thinness_ten_nineteen_years"]
 
 def feature_eng(df, exclude_sensitive=False):
     df = df.copy()
