@@ -6,8 +6,8 @@
 |Region|179 countries are distributed in 9 regions. E.g. Africa, Asia, Oceania, European Union, Rest of Europe and etc.|Insensitive|Keep|
 |Year|Years observed from 2000 to 2015|Insensitive|Keep|
 |**Status**|**Developed or Developing status**|**Insensitive**|**---**|
-|Developing county|Developing county|Insensitive|Drop|
-|Developed country|Developed county|Insensitive|Keep|
+|Developing country|Developing country|Insensitive|Drop|
+|Developed country|Developed country|Insensitive|Keep|
 |**Economic Data**|**Economic factors for those countries**|**Insensitive**|**---**|
 |GDP/capita|GDP per capita in current USD|Insensitive|Keep|
 |Population|Total population in millions|Insensitive|Keep|
