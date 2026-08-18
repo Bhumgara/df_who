@@ -37,11 +37,13 @@ def create_model(exclude_sensitive=False):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
     X_train = feature_eng(X_train, exclude_sensitive=exclude_sensitive)
     X_test = feature_eng(X_test, exclude_sensitive=exclude_sensitive)
+    X = feature_eng(X, exclude_sensitive=exclude_sensitive)
     lin_reg = sm.OLS(y_train, X_train)
     results = lin_reg.fit()
     train_r2, train_rmse = model_stats(X_train, y_train)
     test_r2, test_rmse = model_stats(X_test, y_test)
-    return results, train_r2, train_rmse, test_r2, test_rmse
+    full_r2, full_rmse = model_stats(X, y)
+    return results, train_r2, train_rmse, test_r2, test_rmse, full_r2, full_rmse
 
 # results is the already-built model
 # X is an array of input values, assumed to already be in order
