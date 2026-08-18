@@ -4,7 +4,12 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.tools
 
-# Columns that are dropped regardless
+# Columns that are dropped regardless:
+# Country is a text column and there are too many of them to one-hot encode
+# Economy_status_Developing is redundant because it is the direct opposite of Economy_status_Developed
+# Infant_deaths is heavily correlated with Under_five deaths
+# Polio is heavily correlated with Diphtheria
+# Thinness_five_nine_years is heavily correlated with Thinness_ten_nineteen_years
 BAD_COLS = ['Infant_deaths', 'Economy_status_Developing', 'Country', 'Thinness_five_nine_years', 'Polio']
 
 # Columns that are dropped if the user wants to exclude sensitive information
