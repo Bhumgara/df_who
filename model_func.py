@@ -20,15 +20,15 @@ def model_stats(X, y):
     rmse = statsmodels.tools.eval_measures.rmse(y, y_pred)
     return results.rsquared, rmse
 
-def create_model():
+def create_model(exclude_sensitive=False):
     df = pd.read_csv('Life Expectancy Data.csv')
     feature_cols = list(df.columns)
     feature_cols.remove('Life_expectancy')
     X = df[feature_cols]
     y = df['Life_expectancy']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
-    X_train = feature_eng(X_train)
-    X_test = feature_eng(X_test)
+    X_train = feature_eng(X_train, exclude_sensitive=exclude_sensitive)
+    X_test = feature_eng(X_test, exclude_sensitive=exclude_sensitive)
     lin_reg = sm.OLS(y_train, X_train)
     results = lin_reg.fit()
     train_r2, train_rmse = model_stats(X_train, y_train)
