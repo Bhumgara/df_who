@@ -4,9 +4,10 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.tools
 
+BAD_COLS = ['Infant_deaths', 'Economy_status_Developed', 'Economy_status_Developing', 'Country', 'Diphtheria', 'Thinness_five_nine_years', 'Population_mln', 'Polio', 'Measles', 'Alcohol_consumption']
+SENSITIVE_COLS = ['Hepatitis_B', 'BMI', 'Incidents_HIV', 'Thinness_ten_nineteen_years']
+
 def feature_eng(df, exclude_sensitive=False):
-    BAD_COLS = ['Infant_deaths', 'Economy_status_Developed', 'Economy_status_Developing', 'Country', 'Diphtheria', 'Thinness_five_nine_years', 'Population_mln', 'Polio', 'Measles', 'Alcohol_consumption']
-    SENSITIVE_COLS = ['Hepatitis_B', 'BMI', 'Incidents_HIV', 'Thinness_ten_nineteen_years']
     df = df.copy()
     df = pd.get_dummies(df, columns = ['Region'], drop_first = True, prefix = 'region', dtype=float)
     df = sm.add_constant(df)
@@ -35,7 +36,12 @@ def create_model(exclude_sensitive=False):
     test_r2, test_rmse = model_stats(X_test, y_test)
     return results, train_r2, train_rmse, test_r2, test_rmse
 
-def make_prediction(results, cols, X):
-    df_X = pd.DataFrame(X, columns=cols)
+def make_prediction(results, X, exclude_sensitive=False):
+    df = pd.read_csv('Life Expectancy Data.csv')
+    feature_cols = list(df.columns)
+    feature_cols.remove(BAD_COLS)
+    if exclude_sensitive:
+        feature_cols.remove(SENSITIVE_COLS)
+    df_X = pd.DataFrame([X], columns=feature_cols)
     y = results.predict(df_X)
     return y
