@@ -35,6 +35,7 @@ def create_model(exclude_sensitive=False):
     test_r2, test_rmse = model_stats(X_test, y_test)
     return results, train_r2, train_rmse, test_r2, test_rmse
 
-def make_prediction(results, X):
-    y = results.predict(X)
+def make_prediction(results, cols, X):
+    df_X = pd.DataFrame(X, columns=cols)
+    y = results.predict(df_X)
     return y
