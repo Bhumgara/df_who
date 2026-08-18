@@ -21,7 +21,7 @@ def feature_eng(df, exclude_sensitive=False):
     return df
 
 # Predicts using the model to find R^2 and RMSE, reusable for train and test
-def model_stats(X, y):
+def model_stats(X, y, results):
     y_pred = results.predict(X)
     rmse = statsmodels.tools.eval_measures.rmse(y, y_pred)
     return results.rsquared, rmse
@@ -40,9 +40,9 @@ def create_model(exclude_sensitive=False):
     X = feature_eng(X, exclude_sensitive=exclude_sensitive)
     lin_reg = sm.OLS(y_train, X_train)
     results = lin_reg.fit()
-    train_r2, train_rmse = model_stats(X_train, y_train)
-    test_r2, test_rmse = model_stats(X_test, y_test)
-    full_r2, full_rmse = model_stats(X, y)
+    train_r2, train_rmse = model_stats(X_train, y_train, results)
+    test_r2, test_rmse = model_stats(X_test, y_test, results)
+    full_r2, full_rmse = model_stats(X, y, results)
     return results, train_r2, train_rmse, test_r2, test_rmse, full_r2, full_rmse
 
 # results is the already-built model
