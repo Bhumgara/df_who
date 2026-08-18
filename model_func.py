@@ -44,7 +44,7 @@ def create_model(exclude_sensitive=False):
     return results, train_r2, train_rmse, test_r2, test_rmse
 
 # results is the already-built model
-# X is an array of input values
+# X is an array of input values, assumed to already be in order
 # exclude_sensitive should have the same value as was inputted for create_model
 def make_prediction(results, X, exclude_sensitive=False):
     df = pd.read_csv('Life Expectancy Data.csv')
