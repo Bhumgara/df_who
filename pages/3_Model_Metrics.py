@@ -24,7 +24,7 @@ if "model" in st.session_state.keys():
 
     st.subheader("Actual vs Prediction Comparison")
 
-    st.pyplot(plt.figure(figsize=(16, 12)), plot_actual_vs_predicted([(st.session_state["pred_test"], st.session_state["y_test"])]))
+    st.pyplot(plt.figure(figsize=(16, 8)), plot_actual_vs_predicted([(st.session_state["pred_test"], st.session_state["y_test"])]))
 else:
     st.write("No model created. Use the button in the sidebar to create one.")
 
