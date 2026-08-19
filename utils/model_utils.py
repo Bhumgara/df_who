@@ -5,9 +5,11 @@ Required input: whether to include sensitive columns, csv file name
 
 Output: 
 X: post-FE columns (including const)
+--> Used for plot_correlation and compute_vif
 stats_df: DataFrame containing the R^2, RMSE and MAE of the model on the train, test and full data
-pred_test: the model's predictions on the test data
-y_test: the actual test data
+--> Not used in the visualisation functions
+pred_test, y_test: the model's predictions on the test data & the actual test data
+--> Both used for plot_residuals and plot_actual_vs_predicted
 '''
 
 import numpy as np
