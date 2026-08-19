@@ -39,11 +39,10 @@ SENSITIVE_COLS = ["Under_five_deaths", "Adult_mortality", "Alcohol_consumption",
 
 def feature_eng(df, exclude_sensitive=False):
     '''
-    One-hot encodes Region, adds the constant and drops unneeded columns
+    One-hot encodes Region and drops unneeded columns
     '''
     df = df.copy()
     df = pd.get_dummies(df, columns = ['Region'], drop_first = True, prefix = 'region', dtype=float)
-    df = sm.add_constant(df)
     df = df.drop(columns=BAD_COLS)
     if exclude_sensitive:
         df = df.drop(columns=SENSITIVE_COLS)
@@ -84,6 +83,11 @@ def create_model(exclude_sensitive=False, csv='Life Expectancy Data.csv'):
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
+    X = scaler.transform(X)
+
+    X_train = sm.add_constant(X_train)
+    X_test = sm.add_constant(X_test)
+    X = sm.add_constant(X)
 
     lin_reg = sm.OLS(y_train, X_train)
     results = lin_reg.fit()
