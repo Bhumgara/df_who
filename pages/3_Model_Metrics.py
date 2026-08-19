@@ -7,14 +7,22 @@ from utils.viz_utils import plot_correlation, plot_residuals, plot_actual_vs_pre
 
 if "model" in st.session_state.keys():
     st.write("You have a model! Let's look at the stats.")
+
+    st.subheader("Model Performance")
     
     st.dataframe(st.session_state["stats_df"])
 
+    st.subheader("Feature Column Correlation")
+
     st.pyplot(plt.figure(figsize=(16, 12)), plot_correlation(st.session_state["X"]))
+
+    st.subheader("Residual Distribution")
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
     st.pyplot(fig, plot_residuals(st.session_state["pred_test"], st.session_state["y_test"], axes))
+
+    st.subheader("Actual vs Prediction Comparison")
 
     st.pyplot(plt.figure(figsize=(16, 12)), plot_actual_vs_predicted([(st.session_state["pred_test"], st.session_state["y_test"])]))
 else:
