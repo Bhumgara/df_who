@@ -118,7 +118,7 @@ with st.sidebar:
             st.write("Model complete! Head to other pages to use this model.")
         
             # stash results in session_state so other parts of the app
-            st.session_stats["model"] = model
+            st.session_state["model"] = model
             st.session_state["X"] = X
             st.session_state["stats_df"] = stats_df
             st.session_state["pred_test"] = pred_test
