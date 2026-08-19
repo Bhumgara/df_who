@@ -15,16 +15,12 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
+from utils.data_utils import load_data, format_data
 
-def load_data(filepath):
-    """
-    Read in filepath as a parameter
-    and return the dataframe as well as define
-    what the target column is
-    """
-    df = pd.read_csv(filepath)
-    y = df["Life_expectancy"]
-    return df, y
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def features_sets(df):
@@ -223,7 +219,9 @@ def run_full_analysis(filepath):
     Returns all the dictionaries with keys for the functions called.
     """
     # -- Load -------------------------------------------------------------
-    df, y = load_data(filepath)
+    df = load_data(filepath)
+
+    df, y = format_data(df)
 
     # -- Feature sets -----------------------------------------------------
     df_insens, df_sens = features_sets(df)
@@ -283,4 +281,4 @@ def run_full_analysis(filepath):
 
 
 if __name__ == "__main__":
-    run_full_analysis("Life Expectancy Data.csv")
+    run_full_analysis(os.getenv("DATA_CSV"))

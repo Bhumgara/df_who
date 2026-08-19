@@ -4,15 +4,28 @@ from utils.layout import render_header, bordered_section
 
 from utils.model_utils import create_model
 
+from utils.data_utils import load_data
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 st.set_page_config(
     page_title="WHO Life Expectancy Explorer",
     layout="wide",
 )
 
+if "csv" not in st.session_state:
+    st.session_state["csv"] = os.getenv("DATA_CSV")
+
+if "data" not in st.session_state:
+    st.session_state["data"] = load_data(st.session_state["csv"])
+
 # --- Header ---
 render_header(
     page_title="WHO Life Expectancy Explorer",
-    page_subtitle="Predicting life expectancy from WHO development indicators",
+    page_subtitle="Predicting life expectancy from WHO development indicators - Correlation Cowboys",
 )
 
 # --- Project overview ---
@@ -109,18 +122,21 @@ with bordered_section("Assumptions"):
     )
 
 with st.sidebar:
-    st.write("Some advanced population data may include protected information. Only uncheck this box if you wish to include this data for better accuracy.")
+    st.write(
+        "Some advanced population data may include protected information. Only uncheck this box if you wish to include this data for better accuracy."
+    )
     sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
     if st.button(label="Rebuild model"):
         with st.spinner("Training model..."):
-            model, X, stats_df, pred_test, y_test = create_model(exclude_sensitive=sensitive)
-    
+            model, X, stats_df, pred_test, y_test = create_model(
+                st.session_state["data"], exclude_sensitive=sensitive
+            )
+
             st.write("Model complete! Head to other pages to use this model.")
-        
+
             # stash results in session_state so other parts of the app
             st.session_state["model"] = model
             st.session_state["X"] = X
             st.session_state["stats_df"] = stats_df
             st.session_state["pred_test"] = pred_test
             st.session_state["y_test"] = y_test
-   

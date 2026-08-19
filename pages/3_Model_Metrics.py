@@ -47,7 +47,9 @@ with st.sidebar:
     sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
     if st.button(label="Rebuild model"):
         with st.spinner("Training model..."):
-            model, X, stats_df, pred_test, y_test = create_model(exclude_sensitive=sensitive)
+            model, X, stats_df, pred_test, y_test = create_model(
+                st.session_state["data"], exclude_sensitive=sensitive
+            )
 
             st.write("Model complete! Head to other pages to use this model.")
 
