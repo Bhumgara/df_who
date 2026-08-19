@@ -14,7 +14,7 @@ if "model" in st.session_state.keys():
 
     st.subheader("Feature Column Correlation")
 
-    st.pyplot(plt.figure(figsize=(16, 12)), plot_correlation(st.session_state["X"]))
+    st.pyplot(plt.figure(figsize=(16, 8)), plot_correlation(st.session_state["X"]))
 
     st.subheader("Residual Distribution")
 
