@@ -140,4 +140,5 @@ def load_data(filepath):
 
 def format_data(df):
     y = df["Life_expectancy"]
+    df.drop(["Life_expectancy"], inplace=True)
     return df, y

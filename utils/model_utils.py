@@ -92,11 +92,8 @@ def create_model(df, exclude_sensitive=False):
     Main function called by the Streamlit app
     Outputs the model and stats on the train & test data
     """
-    feature_cols = list(df.columns)
-    feature_cols.remove("Life_expectancy")
 
-    X = df[feature_cols]
-    y = df["Life_expectancy"]
+    X, y = format_data
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
