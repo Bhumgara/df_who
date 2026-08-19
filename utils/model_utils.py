@@ -57,7 +57,7 @@ def model_stats(X, y, results, type):
 
     return {
     'Split': type, 
-    'R²': round(results.rsquared, 4),
+    'R_Squared': round(results.rsquared, 4),
     'RMSE':  round(statsmodels.tools.eval_measures.rmse(y, y_pred), 4),
     'MAE':   round(statsmodels.tools.eval_measures.meanabs(y, y_pred), 4)
     }, y_pred
