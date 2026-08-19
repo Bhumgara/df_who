@@ -10,6 +10,7 @@ dependencies = [
     "streamlit",
     "matplotlib",
     "kagglehub",
+    "python-dotenv",
 ]
 
 [tool.setuptools]

@@ -6,3 +6,4 @@ seaborn
 streamlit
 matplotlib
 kagglehub
+python-dotenv
