@@ -183,5 +183,8 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-#Notebook Files
+# Notebook Files
 *.ipynb
+
+# VS Code Config
+/.vscode
