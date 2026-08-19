@@ -40,8 +40,10 @@ SENSITIVE_COLS = ["Under_five_deaths", "Adult_mortality", "Alcohol_consumption",
 def feature_eng(df, exclude_sensitive=False):
     '''
     One-hot encodes Region and drops unneeded columns
+    Transforms GDP per capita into log for better performance
     '''
     df = df.copy()
+    df['GDP_per_capita'] = np.log(df['GDP_per_capita'])
     df = pd.get_dummies(df, columns = ['Region'], drop_first = True, prefix = 'region', dtype=float)
     df = df.drop(columns=BAD_COLS)
     if exclude_sensitive:
