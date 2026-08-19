@@ -23,7 +23,6 @@ import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression
 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
