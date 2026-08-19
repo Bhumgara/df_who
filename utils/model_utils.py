@@ -3,7 +3,9 @@ create_model is the main function.
 
 Required input: whether to include sensitive columns, csv file name
 
-Output: 
+Output:
+results: model to make future predictions
+--> Used for the Get Prediction function
 X: post-FE columns (including const)
 --> Used for plot_correlation and compute_vif
 stats_df: DataFrame containing the R^2, RMSE and MAE of the model on the train, test and full data
@@ -99,7 +101,7 @@ def create_model(exclude_sensitive=False, csv='Life Expectancy Data.csv'):
     full_stats, pred_full = model_stats(X, y, results, 'Full')
     stats_df = pd.DataFrame([train_stats, test_stats, full_stats])
 
-    return X, stats_df, pred_test, y_test
+    return results, X, stats_df, pred_test, y_test
 
 def make_prediction(results, X, exclude_sensitive=False, csv='Life Expectancy Data.csv'):
     '''
