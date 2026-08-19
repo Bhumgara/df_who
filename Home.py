@@ -6,8 +6,12 @@ from utils.model_utils import create_model
 
 from utils.data_utils import load_data
 
+import glob
+
 import os
 from dotenv import load_dotenv
+
+import kagglehub
 
 load_dotenv()
 
@@ -18,10 +22,19 @@ st.set_page_config(
 
 if "csv" not in st.session_state:
     # st.session_state["csv"] = os.getenv("DATA_CSV")
-    st.session_state["csv"] = st.secrets("DATA_CSV")
+    st.session_state["csv"] = st.secrets["DATA_CSV"]
+
+if "prod" not in st.session_state:
+    # st.session_state["prod"] = bool(os.getenv("PROD"))
+    st.session_state["prod"] = bool(st.secrets["PROD"])
 
 if "data" not in st.session_state:
-    st.session_state["data"] = load_data(st.session_state["csv"])
+    if st.session_state["prod"]:
+        dataset_dir = kagglehub.dataset_download(st.session_state["csv"])
+        csvs = glob.glob(os.path.join(dataset_dir, "*.csv"))
+        if not csvs:
+            raise FileNotFoundError(f"No CSV files found in downloaded dataset: {dataset_dir}")
+    st.session_state["data"] = load_data(csvs[0])
 
 # --- Header ---
 render_header(

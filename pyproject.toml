@@ -10,6 +10,7 @@ dependencies = [
     "seaborn",
     "streamlit",
     "matplotlib",
+    "kagglehub",
 ]
 
 [tool.setuptools]
