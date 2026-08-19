@@ -4,6 +4,15 @@ from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.tools
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from sklearn import metrics
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
 # Columns that are dropped regardless:
 # Country is a text column and there are too many of them to one-hot encode
 # Economy_status_Developing is redundant because it is the direct opposite of Economy_status_Developed
@@ -27,42 +36,59 @@ def feature_eng(df, exclude_sensitive=False):
         df = df.drop(columns=SENSITIVE_COLS)
     return df
 
-def model_stats(X, y, results):
+def model_stats(X, y, results, type):
     '''
-    Predicts using the model to find R^2 and RMSE, reusable for train and test
+    Predicts using the model to find R^2, RMSE and MAE, reusable for train and test
     '''
     y_pred = results.predict(X)
     rmse = statsmodels.tools.eval_measures.rmse(y, y_pred)
-    return results.rsquared, rmse
 
-def create_model(exclude_sensitive=False):
+    return {
+    'Split': type, 
+    'R²': round(results.rsquared, 4),
+    'RMSE':  round(statsmodels.tools.eval_measures.rmse(y, y_pred), 4),
+    'MAE':   round(statsmodels.tools.eval_measures.meanabs(y, y_pred), 4)
+    }, y_pred
+
+def create_model(exclude_sensitive=False, csv='Life Expectancy Data.csv'):
     '''
     Main function called by the Streamlit app
     Outputs the model and stats on the train & test data
     '''
-    df = pd.read_csv('Life Expectancy Data.csv')
+    df = pd.read_csv(csv)
     feature_cols = list(df.columns)
     feature_cols.remove('Life_expectancy')
+
     X = df[feature_cols]
     y = df['Life_expectancy']
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+
     X_train = feature_eng(X_train, exclude_sensitive=exclude_sensitive)
     X_test = feature_eng(X_test, exclude_sensitive=exclude_sensitive)
     X = feature_eng(X, exclude_sensitive=exclude_sensitive)
+
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+
     lin_reg = sm.OLS(y_train, X_train)
     results = lin_reg.fit()
-    train_r2, train_rmse = model_stats(X_train, y_train, results)
-    test_r2, test_rmse = model_stats(X_test, y_test, results)
-    full_r2, full_rmse = model_stats(X, y, results)
-    return results, train_r2, train_rmse, test_r2, test_rmse, full_r2, full_rmse
 
-def make_prediction(results, X, exclude_sensitive=False):
+    train_stats, pred_train = model_stats(X_train, y_train, results, 'Train')
+    test_stats, pred_test = model_stats(X_test, y_test, results, 'Test')
+    full_stats, pred_full = model_stats(X, y, results, 'Full')
+    stats_df = pd.DataFrame([train_stats, test_stats, full_stats])
+
+    return X, stats_df, pred_test, y_test
+
+def make_prediction(results, X, exclude_sensitive=False, csv='Life Expectancy Data.csv'):
     '''
     results is the already-built model
     X is an array of input values, assumed to already be in order
     exclude_sensitive should have the same value as was inputted for create_model
     '''
-    df = pd.read_csv('Life Expectancy Data.csv')
+    df = pd.read_csv(csv)
     feature_cols = list(df.columns)
     feature_cols.remove(BAD_COLS)
     if exclude_sensitive:
