@@ -14,3 +14,6 @@ dependencies = [
 
 [tool.setuptools]
 packages = ["utils"]
+
+[tool.black]
+line-length = 100
