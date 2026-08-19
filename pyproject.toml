@@ -6,7 +6,6 @@ dependencies = [
     "pandas",
     "statsmodels",
     "scikit-learn",
-    "sklearn",
     "seaborn",
     "streamlit",
     "matplotlib",
