@@ -87,19 +87,21 @@ def create_model(exclude_sensitive=False, csv='Life Expectancy Data.csv'):
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
-    X = scaler.transform(X)
+    X_full = scaler.transform(X)
 
     X_train = sm.add_constant(X_train)
     X_test = sm.add_constant(X_test)
-    X = sm.add_constant(X)
+    X_full = sm.add_constant(X_full)
 
     lin_reg = sm.OLS(y_train, X_train)
     results = lin_reg.fit()
 
-    train_stats, pred_train = model_stats(X_train, y_train, results, 'Train')
-    test_stats, pred_test = model_stats(X_test, y_test, results, 'Test')
-    full_stats, pred_full = model_stats(X, y, results, 'Full')
+    train_stats, pred_train = model_stats(X_train, y_train, results, 'Train data')
+    test_stats, pred_test = model_stats(X_test, y_test, results, 'Test data')
+    full_stats, pred_full = model_stats(X_full, y, results, 'Full data')
     stats_df = pd.DataFrame([train_stats, test_stats, full_stats])
+
+    X = X.select_dtypes(include="number")
 
     return results, X, stats_df, pred_test, y_test
 

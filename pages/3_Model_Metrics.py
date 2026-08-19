@@ -1,20 +1,33 @@
 import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from utils.model_utils import create_model
+from utils.viz_utils import plot_correlation, plot_residuals, plot_actual_vs_predicted
 
 if "model" in st.session_state.keys():
     st.write("You have a model! Let's look at the stats.")
+    
+    st.dataframe(st.session_state["stats_df"])
+
+    st.pyplot(plt.figure(figsize=(16, 12)), plot_correlation(st.session_state["X"]))
+
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+    st.pyplot(fig, plot_residuals(st.session_state["pred_test"], st.session_state["y_test"], axes))
+
+    st.pyplot(plt.figure(figsize=(16, 12)), plot_actual_vs_predicted([(st.session_state["pred_test"], st.session_state["y_test"])]))
 else:
     st.write("No model created. Use the button in the sidebar to create one.")
 
 with st.sidebar:
-    st.write("Some advanced population data may include protected information. Only check this box if you wish to include this data for better accuracy.")
-    sensitive = st.checkbox(label="Include sensitive data?", value=False)
+    st.write("Some advanced population data may include protected information. Only uncheck this box if you wish to include this data for better accuracy.")
+    sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
     if st.button(label="Rebuild model"):
         with st.spinner("Training model..."):
             model, X, stats_df, pred_test, y_test = create_model(exclude_sensitive=sensitive)
     
-            st.write("Model complete! Reload or head to other pages to use this model.")
+            st.write("Model complete! Head to other pages to use this model.")
         
             # stash results in session_state so other parts of the app
             st.session_state["model"] = model

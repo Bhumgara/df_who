@@ -109,8 +109,8 @@ with bordered_section("Assumptions"):
     )
 
 with st.sidebar:
-    st.write("Some advanced population data may include protected information. Only check this box if you wish to include this data for better accuracy.")
-    sensitive = st.checkbox(label="Include sensitive data?", value=False)
+    st.write("Some advanced population data may include protected information. Only uncheck this box if you wish to include this data for better accuracy.")
+    sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
     if st.button(label="Rebuild model"):
         with st.spinner("Training model..."):
             model, X, stats_df, pred_test, y_test = create_model(exclude_sensitive=sensitive)

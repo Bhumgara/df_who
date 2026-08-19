@@ -58,7 +58,6 @@ def plot_correlation(feature_df):
     '''
     Plot a seaborn correlation heatmap for the given feature DataFrame.
     '''
-    plt.figure(figsize=(10, 8))
     sns.heatmap(feature_df.corr(), annot=True, fmt=".2f")
     plt.title("Correlation heatmap")
     plt.tight_layout()
@@ -136,13 +135,11 @@ def train_evaluate(X, y):
     metrics_df = pd.DataFrame([_row("Train", y_train, train_pred), _row("Test", y_test, test_pred)])
     return test_pred, y_test, metrics_df, scaler, model
  
-def plot_residuals(test_pred, y_test):
+def plot_residuals(test_pred, y_test, axes):
     '''
     Plot residuals vs fitted values and a residual histogram.
     '''
     residuals = y_test - test_pred
- 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
  
     axes[0].scatter(test_pred, residuals, alpha=0.3)
     axes[0].axhline(0, color='red', linestyle='--')
@@ -190,22 +187,17 @@ def plot_actual_vs_predicted(pairs):
     '''
     Scatter plot of actual vs predicted life expectancy.
 
-    Reads in a list of test_pred, y_true and title tuples (pairs)
+    Reads in a list of test_pred and y_true tuples (pairs)
     '''
-    n = len(pairs)
-    fig, axes = plt.subplots(1, n, figsize=(14, 5))
-    if n == 1:
-        axes = [axes]
  
-    for ax, (test_pred, y_true, title) in zip(axes, pairs):
-        ax.scatter(y_true, test_pred, alpha=0.3)
+    for (test_pred, y_true) in pairs:
+        plt.scatter(y_true, test_pred, alpha=0.3)
         lo = min(y_true.min(), test_pred.min()) - 1
         hi = max(y_true.max(), test_pred.max()) + 1
-        ax.plot([lo, hi], [lo, hi], 'r--', label='Perfect fit')
-        ax.set_xlabel("Actual life expectancy")
-        ax.set_ylabel("Predicted life expectancy")
-        ax.set_title(title)
-        ax.legend()
+        plt.plot([lo, hi], [lo, hi], 'r--', label='Perfect fit')
+        
+    plt.xlabel("Actual life expectancy")
+    plt.ylabel("Predicted life expectancy")
  
     plt.tight_layout()
     plt.show()
