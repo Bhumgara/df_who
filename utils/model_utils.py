@@ -93,7 +93,7 @@ def create_model(df, exclude_sensitive=False):
     Outputs the model and stats on the train & test data
     """
 
-    X, y = format_data
+    X, y = format_data(df)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
@@ -123,13 +123,13 @@ def create_model(df, exclude_sensitive=False):
     return results, X, stats_df, pred_test, y_test
 
 
-def make_prediction(results, X, exclude_sensitive=False, csv="Life Expectancy Data.csv"):
+def make_prediction(df, results, X, exclude_sensitive=False):
     """
     results is the already-built model
     X is an array of input values, assumed to already be in order
     exclude_sensitive should have the same value as was inputted for create_model
     """
-    df = pd.read_csv(csv)
+
     feature_cols = list(df.columns)
     feature_cols.remove(BAD_COLS)
     if exclude_sensitive:

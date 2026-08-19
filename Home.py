@@ -6,13 +6,18 @@ from utils.model_utils import create_model
 
 from utils.data_utils import load_data
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 st.set_page_config(
     page_title="WHO Life Expectancy Explorer",
     layout="wide",
 )
 
 if "csv" not in st.session_state:
-    st.session_state["csv"] = "data/Life Expectancy Data.csv"
+    st.session_state["csv"] = os.getenv("DATA_CSV")
 
 if "data" not in st.session_state:
     st.session_state["data"] = load_data(st.session_state["csv"])

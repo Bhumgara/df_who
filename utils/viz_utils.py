@@ -17,6 +17,11 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from utils.data_utils import load_data, format_data
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def features_sets(df):
     """
@@ -276,4 +281,4 @@ def run_full_analysis(filepath):
 
 
 if __name__ == "__main__":
-    run_full_analysis("Life Expectancy Data.csv")
+    run_full_analysis(os.getenv("DATA_CSV"))
