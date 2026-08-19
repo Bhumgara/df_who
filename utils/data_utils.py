@@ -125,3 +125,19 @@ def clean_data(df):
     df_clean = df_clean.reset_index(drop=True)
 
     return df_clean
+
+
+def load_data(filepath):
+    """
+    Read in filepath as a parameter
+    and return the dataframe as well as define
+    what the target column is
+    """
+    df = pd.read_csv(filepath)
+    df = clean_data(df=df)
+    return df
+
+
+def format_data(df):
+    y = df["Life_expectancy"]
+    return df, y
