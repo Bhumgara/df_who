@@ -1,3 +1,15 @@
+'''
+create_model is the main function.
+
+Required input: whether to include sensitive columns, csv file name
+
+Output: 
+X: post-FE columns (including const)
+stats_df: DataFrame containing the R^2, RMSE and MAE of the model on the train, test and full data
+pred_test: the model's predictions on the test data
+y_test: the actual test data
+'''
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
