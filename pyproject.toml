@@ -1,0 +1,16 @@
+[project]
+name = "who-life-expectancy"
+version = "0.1.0"
+dependencies = [
+    "numpy",
+    "pandas",
+    "statsmodels",
+    "scikit-learn",
+    "sklearn",
+    "seaborn",
+    "streamlit",
+    "matplotlib",
+]
+
+[tool.setuptools]
+packages = ["utils"]
