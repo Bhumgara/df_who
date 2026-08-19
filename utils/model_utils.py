@@ -15,8 +15,10 @@ BAD_COLS = ['Infant_deaths', 'Economy_status_Developing', 'Country', 'Thinness_f
 # Columns that are dropped if the user wants to exclude sensitive information
 SENSITIVE_COLS = ["Under_five_deaths", "Adult_mortality", "Alcohol_consumption", "Hepatitis_B", "Measles", "BMI", "Diphtheria", "Incidents_HIV", "Thinness_ten_nineteen_years"]
 
-# One-hot encodes Region, adds the constant and drops unneeded columns
 def feature_eng(df, exclude_sensitive=False):
+    '''
+    One-hot encodes Region, adds the constant and drops unneeded columns
+    '''
     df = df.copy()
     df = pd.get_dummies(df, columns = ['Region'], drop_first = True, prefix = 'region', dtype=float)
     df = sm.add_constant(df)
@@ -25,15 +27,19 @@ def feature_eng(df, exclude_sensitive=False):
         df = df.drop(columns=SENSITIVE_COLS)
     return df
 
-# Predicts using the model to find R^2 and RMSE, reusable for train and test
 def model_stats(X, y, results):
+    '''
+    Predicts using the model to find R^2 and RMSE, reusable for train and test
+    '''
     y_pred = results.predict(X)
     rmse = statsmodels.tools.eval_measures.rmse(y, y_pred)
     return results.rsquared, rmse
 
-# Main function called by the Streamlit app
-# Outputs the model and stats on the train & test data
 def create_model(exclude_sensitive=False):
+    '''
+    Main function called by the Streamlit app
+    Outputs the model and stats on the train & test data
+    '''
     df = pd.read_csv('Life Expectancy Data.csv')
     feature_cols = list(df.columns)
     feature_cols.remove('Life_expectancy')
@@ -50,10 +56,12 @@ def create_model(exclude_sensitive=False):
     full_r2, full_rmse = model_stats(X, y, results)
     return results, train_r2, train_rmse, test_r2, test_rmse, full_r2, full_rmse
 
-# results is the already-built model
-# X is an array of input values, assumed to already be in order
-# exclude_sensitive should have the same value as was inputted for create_model
 def make_prediction(results, X, exclude_sensitive=False):
+    '''
+    results is the already-built model
+    X is an array of input values, assumed to already be in order
+    exclude_sensitive should have the same value as was inputted for create_model
+    '''
     df = pd.read_csv('Life Expectancy Data.csv')
     feature_cols = list(df.columns)
     feature_cols.remove(BAD_COLS)
