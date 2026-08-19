@@ -17,7 +17,8 @@ st.set_page_config(
 )
 
 if "csv" not in st.session_state:
-    st.session_state["csv"] = os.getenv("DATA_CSV")
+    # st.session_state["csv"] = os.getenv("DATA_CSV")
+    st.session_state["csv"] = st.secrets("DATA_CSV")
 
 if "data" not in st.session_state:
     st.session_state["data"] = load_data(st.session_state["csv"])
