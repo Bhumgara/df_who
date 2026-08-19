@@ -64,7 +64,7 @@ def plot_correlation(feature_df, prov_annot_threshold):
 
     corr_matrix = feature_df.corr()
 
-    annot_df = corr_matrix.applymap(lambda x: f"{x:.2f}" if np.abs(x) > annot_threshold else "")
+    annot_df = corr_matrix.map(lambda x: f"{x:.2f}" if np.abs(x) > annot_threshold else "")
     sns.heatmap(corr_matrix, annot=annot_df, fmt="")
     plt.title("Correlation heatmap")
     plt.tight_layout()
