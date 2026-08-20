@@ -66,27 +66,38 @@ with bordered_section("Challenges & Choices"):
         """)
     st.write("""
         ##### Choosing Diptheria over Polio
-        > Gold Standard for Routine Health Systems: The World Health Organisation (WHO) officially uses DTP3 coverage as the primary international benchmark to measure the strength and reach of a country's routine everyday healthcare system. [WHO Indicator: DTP3 immunization coverage among 1-year-olds (%)](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/88) [Poliomyelitis vaccination coverage - Reference](https://immunizationdata.who.int/global/wiise-detail-page/poliomyelitis-vaccination-coverage?CODE=Global&ANTIGEN=&YEAR=)
+        > **Gold Standard for Routine Health Systems**: The World Health Organisation (WHO) officially uses DTP3 coverage as the primary international benchmark to measure the strength and reach of a country's routine everyday healthcare system. [WHO Indicator: DTP3 immunization coverage among 1-year-olds (%)](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/88) [Poliomyelitis vaccination coverage - Reference](https://immunizationdata.who.int/global/wiise-detail-page/poliomyelitis-vaccination-coverage?CODE=Global&ANTIGEN=&YEAR=)
 
-        > Shows clinic quality: Polio drops are often handed out quickly on the street, but DTP3 shots require an actual clinic visit. High DTP3 rates prove a country has real, clean hospitals for mothers and babies, which naturally keeps people living longer.
+        > **Shows clinic quality**: Polio drops are often handed out quickly on the street, but DTP3 shots require an actual clinic visit. High DTP3 rates prove a country has real, clean hospitals for mothers and babies, which naturally keeps people living longer.
         """)
 
     st.write("""
         ##### Choosing Under-five deaths over Infant deaths
-        > Captures Broader Socioeconomic Strain: Under-five deaths captures the extended risks a child faces as they transition to solid foods and interact with the environment, making it a better reflection of long-term malnutrition, unsafe water, and poverty.
+        > **Captures Broader Socioeconomic Strain**: Under-five deaths captures the extended risks a child faces as they transition to solid foods and interact with the environment, making it a better reflection of long-term malnutrition, unsafe water, and poverty.
 
-        > Mathematical Inclusivity: Because under-five deaths mathematically includes infant deaths, choosing this variable ensures you do not lose the infant data; you simply expand it to include the critical toddler years. [WHO Indicator: Under-five mortality rate (per 1000 live births)](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/7)
+        > **Mathematical Inclusivity**: Because under-five deaths mathematically includes infant deaths, choosing this variable ensures you do not lose the infant data; you simply expand it to include the critical toddler years. [WHO Indicator: Under-five mortality rate (per 1000 live births)](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/7)
         """)
 
     st.write("""
         ##### Choosing Thinness 10-19 over Thinness 5-9
-        > Captures Adolescent Growth Spurts: The 10-19 age bracket spans puberty, a critical developmental window where nutritional deficits cause severe, permanent stunting and lifelong health impacts.
+        > **Captures Adolescent Growth Spurts**: The 10-19 age bracket spans puberty, a critical developmental window where nutritional deficits cause severe, permanent stunting and lifelong health impacts.
 
-        > Reflects School-Age and Independence Risks: This older cohort reflects the cumulative impact of school nutrition programmes (or lack thereof) and independent dietary habits, showing how health shifts as children grow outside early maternal care.
+        > **Reflects School-Age and Independence Risks**: This older cohort reflects the cumulative impact of school nutrition programmes (or lack thereof) and independent dietary habits, showing how health shifts as children grow outside early maternal care.
 
-        > Showcases Continuance of Life Expectancy: Extending the tracked window to age 5 bridges the gap to overall life expectancy. Since the sharpest drop in early-life mortality happens before age 5, capturing survival past this critical threshold serves as a stronger baseline for predicting long-term survival and overall lifespan trends.
+        > **Showcases Continuance of Life Expectancy**: Extending the tracked window to age 5 bridges the gap to overall life expectancy. Since the sharpest drop in early-life mortality happens before age 5, capturing survival past this critical threshold serves as a stronger baseline for predicting long-term survival and overall lifespan trends.
                 
         """)
+    st.write("""
+    #### Feature Engineering
+
+    > **Log-transformed GDP per capita**: this normalizes the skewed distribution and produces a better linear fit for predictions.
+    
+    > **One-hot encoded Region**: since regions are categorical with no inherent order, splitting them into separate binary features lets the model treat each one independently.
+    
+    > **Dropped `Economy_status_Developing`**: this was redundant, as it's the inverse of another economy status column (keeping both would introduce perfect multicollinearity).
+    
+    > **Dropped `Country`**: too many unique values to encode meaningfully as a category without overfitting or exploding dimensionality.
+    """)
 
 with bordered_section("Assumptions"):
     st.subheader("Data validity")
