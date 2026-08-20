@@ -10,6 +10,17 @@ from dotenv import load_dotenv
 
 import kagglehub
 
+# List of keys to drop from the session state
+SECOND_MODEL_KEYS = [
+    "model2",
+    "X2",
+    "stats_df2",
+    "pred_test2",
+    "y_test2",
+    "exclude_sensitive2",
+    "scaler2",
+]
+
 
 def render_header(page_title: str, page_subtitle: str = "") -> None:
     """
@@ -72,11 +83,17 @@ def init_sidebar():
             "Some advanced population data may include protected information. Only uncheck this box if you wish to include this data for better accuracy."
         )
         sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
+        dual_model = st.checkbox(label="Build both Models", value=True)
         if st.button(label="Rebuild model"):
             with st.spinner("Training model..."):
                 model, X, stats_df, pred_test, y_test, scaler = create_model(
                     st.session_state["data"], exclude_sensitive=sensitive
                 )
+
+                if dual_model:
+                    model2, X2, stats_df2, pred_test2, y_test2, scaler2 = create_model(
+                        st.session_state["data"], exclude_sensitive=(not sensitive)
+                    )
 
                 st.write("Model complete! Head to other pages to use this model.")
 
@@ -88,3 +105,16 @@ def init_sidebar():
                 st.session_state["y_test"] = y_test
                 st.session_state["exclude_sensitive"] = sensitive
                 st.session_state["scaler"] = scaler
+                if dual_model:
+                    st.session_state["model2"] = model2
+                    st.session_state["X2"] = X2
+                    st.session_state["stats_df2"] = stats_df2
+                    st.session_state["pred_test2"] = pred_test2
+                    st.session_state["y_test2"] = y_test2
+                    st.session_state["exclude_sensitive2"] = not sensitive
+                    st.session_state["scaler2"] = scaler2
+                else:
+                    # Safely delete each key if it exists
+                    for key in SECOND_MODEL_KEYS:
+                        if key in st.session_state:
+                            del st.session_state[key]
