@@ -4,7 +4,7 @@ import numpy as np
 from utils.layout import init_streamlit_state_values, init_sidebar
 
 st.session_state = init_streamlit_state_values(st.session_state, st.secrets)
-from utils.model_utils import create_model, make_prediction
+from utils.model_utils import make_prediction
 
 if "model" in st.session_state.keys():
     st.write("You have a model! Let's make a prediction.")
@@ -24,8 +24,8 @@ if "model" in st.session_state.keys():
         ],
     )
     year = st.slider(label="Year", min_value=1990, max_value=2030)
-    gdp = st.number_input(label="GDP per capita", step=100)
-    population = st.number_input(label="Population", step=100000)
+    gdp = st.number_input(label="GDP per capita", step=1)
+    population = st.number_input(label="Population", step=1)
     schooling = st.number_input(label="Average number of schooling years", format="%0.1f")
     developed = st.checkbox(label="Developed country?")
     if not st.session_state["exclude_sensitive"]:
@@ -81,8 +81,6 @@ if "model" in st.session_state.keys():
                 region_sa,
             ]
         )
-
-        st.write(new_data)
 
         life_pred = make_prediction(
             st.session_state["data"],

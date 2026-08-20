@@ -19,14 +19,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.tools
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-from sklearn import metrics
 from sklearn.preprocessing import StandardScaler
-
-from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from utils.data_utils import format_data
 
@@ -137,12 +130,34 @@ def make_prediction(df, results, X, scaler, exclude_sensitive=False):
         for col in SENSITIVE_COLS:
             feature_cols.remove(col)
 
-    feature_cols.extend(["region_Asia", "region_Central America and Caribbean", "region_European Union", "region_Middle East", "region_North America", "region_Oceania", "region_Rest of Europe", "region_South America"])
+    feature_cols.extend(
+        [
+            "region_Asia",
+            "region_Central America and Caribbean",
+            "region_European Union",
+            "region_Middle East",
+            "region_North America",
+            "region_Oceania",
+            "region_Rest of Europe",
+            "region_South America",
+        ]
+    )
 
     feature_cols.remove("Region")
     feature_cols.remove("Life_expectancy")
 
-    df_X = pd.DataFrame([X], columns=feature_cols)
-    df_X = scaler.transform(df_X)
+    raw_X = pd.DataFrame(
+        [X],
+        columns=feature_cols,
+    )
+
+    df_X = pd.DataFrame(
+        scaler.transform(raw_X),
+        columns=results.model.exog_names[1:],
+        index=[0],
+    )
+
+    df_X.insert(0, "const", 1.0)
     y = results.predict(df_X)
-    return y
+    y_val = y[0]
+    return y_val
