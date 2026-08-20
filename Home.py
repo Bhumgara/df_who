@@ -58,7 +58,7 @@ st.write("")
 
 # --- Challenges & oddities ---
 # TODO: replace with real write-up, e.g. multicollinearity found via VIF, and the sensitive-vs-insensitive feature framing.
-with bordered_section("Challenges & oddities"):
+with bordered_section("Challenges & Choices"):
     st.write("""
         #### Multicollinearity choices
         We identified three pairs of potential features that largely increased VIF due to high correlation.
@@ -87,8 +87,6 @@ with bordered_section("Challenges & oddities"):
         > Showcases Continuance of Life Expectancy: Extending the tracked window to age 5 bridges the gap to overall life expectancy. Since the sharpest drop in early-life mortality happens before age 5, capturing survival past this critical threshold serves as a stronger baseline for predicting long-term survival and overall lifespan trends.
                 
         """)
-
-    st.info("TODO: replace this callout with a specific oddity")
 
 with bordered_section("Assumptions"):
     st.subheader("Data validity")
