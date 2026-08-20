@@ -86,3 +86,4 @@ def init_sidebar():
                 st.session_state["stats_df"] = stats_df
                 st.session_state["pred_test"] = pred_test
                 st.session_state["y_test"] = y_test
+                st.session_state["exclude_sensitive"] = sensitive
