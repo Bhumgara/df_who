@@ -54,12 +54,34 @@ if "model" in st.session_state.keys():
         new_data = [year]
         if not st.session_state["exclude_sensitive"]:
             new_data.extend(
-                under_five_mort, adult_mort, alcohol, hepatitis_b, measles, bmi, diphtheria, hiv
+                [under_five_mort, adult_mort, alcohol, hepatitis_b, measles, bmi, diphtheria, hiv]
             )
-        new_data.extend(np.log(gdp), population)
+        new_data.extend([np.log(gdp), population])
         if not st.session_state["exclude_sensitive"]:
             new_data.append(thinness)
-        new_data.extend(schooling, developed)
+        region_as = region == "Asia"
+        region_ca = region == "Central America and Caribbean"
+        region_eu = region == "European Union"
+        region_me = region == "Middle East"
+        region_na = region == "North America"
+        region_oc = region == "Oceania"
+        region_re = region == "Rest of Europe"
+        region_sa = region == "South America"
+        new_data.extend(
+            [
+                schooling,
+                developed,
+                region_as,
+                region_ca,
+                region_eu,
+                region_me,
+                region_na,
+                region_oc,
+                region_re,
+                region_sa,
+            ]
+        )
+
         life_pred = make_prediction(
             st.session_state["data"],
             st.session_state["model"],

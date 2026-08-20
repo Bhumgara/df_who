@@ -120,7 +120,7 @@ def create_model(df, exclude_sensitive=False):
 
     X = X.select_dtypes(include="number")
 
-    return results, X, stats_df, pred_test, y_test
+    return results, X, stats_df, pred_test, y_test, scaler
 
 
 def make_prediction(df, results, X, exclude_sensitive=False):
@@ -131,9 +131,12 @@ def make_prediction(df, results, X, exclude_sensitive=False):
     """
 
     feature_cols = list(df.columns)
-    feature_cols.remove(BAD_COLS)
+    for col in BAD_COLS:
+        feature_cols.remove(col)
     if exclude_sensitive:
-        feature_cols.remove(SENSITIVE_COLS)
+        for col in SENSITIVE_COLS:
+            feature_cols.remove(col)
+
     df_X = pd.DataFrame([X], columns=feature_cols)
     y = results.predict(df_X)
     return y
