@@ -25,7 +25,7 @@ if "model" in st.session_state.keys():
     )
     year = st.slider(label="Year", min_value=1990, max_value=2030)
     gdp = st.number_input(label="GDP per capita", step=1, value=1, min_value=1)
-    population = st.number_input(label="Population", step=1, value=1, min_value=1)
+    population = st.number_input(label="Population (Millions)", step=1, value=1, min_value=1)
     schooling = st.number_input(label="Average number of schooling years", format="%0.1f")
     developed = st.checkbox(label="Developed country?")
     if not st.session_state["exclude_sensitive"]:
