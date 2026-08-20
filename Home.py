@@ -1,40 +1,13 @@
 import streamlit as st
 
-from utils.layout import render_header, bordered_section
+from utils.layout import render_header, bordered_section, init_streamlit_state_values, init_sidebar
 
-from utils.model_utils import create_model
-
-from utils.data_utils import load_data
-
-import glob
-
-import os
-from dotenv import load_dotenv
-
-import kagglehub
-
-load_dotenv()
+st.session_state = init_streamlit_state_values(st.session_state, st.secrets)
 
 st.set_page_config(
     page_title="WHO Life Expectancy Explorer",
     layout="wide",
 )
-
-if "csv" not in st.session_state:
-    # st.session_state["csv"] = os.getenv("DATA_CSV")
-    st.session_state["csv"] = st.secrets["DATA_CSV"]
-
-if "prod" not in st.session_state:
-    # st.session_state["prod"] = bool(os.getenv("PROD"))
-    st.session_state["prod"] = bool(st.secrets["PROD"])
-
-if "data" not in st.session_state:
-    if st.session_state["prod"]:
-        dataset_dir = kagglehub.dataset_download(st.session_state["csv"])
-        csvs = glob.glob(os.path.join(dataset_dir, "*.csv"))
-        if not csvs:
-            raise FileNotFoundError(f"No CSV files found in downloaded dataset: {dataset_dir}")
-    st.session_state["data"] = load_data(csvs[0])
 
 # --- Header ---
 render_header(
@@ -135,22 +108,4 @@ with bordered_section("Assumptions"):
         "We're using our own judgement to decide which features should be used, we cannot ask client as this has been delegated to us."
     )
 
-with st.sidebar:
-    st.write(
-        "Some advanced population data may include protected information. Only uncheck this box if you wish to include this data for better accuracy."
-    )
-    sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
-    if st.button(label="Rebuild model"):
-        with st.spinner("Training model..."):
-            model, X, stats_df, pred_test, y_test = create_model(
-                st.session_state["data"], exclude_sensitive=sensitive
-            )
-
-            st.write("Model complete! Head to other pages to use this model.")
-
-            # stash results in session_state so other parts of the app
-            st.session_state["model"] = model
-            st.session_state["X"] = X
-            st.session_state["stats_df"] = stats_df
-            st.session_state["pred_test"] = pred_test
-            st.session_state["y_test"] = y_test
+init_sidebar()
