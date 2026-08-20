@@ -123,7 +123,7 @@ def create_model(df, exclude_sensitive=False):
     return results, X, stats_df, pred_test, y_test, scaler
 
 
-def make_prediction(df, results, X, exclude_sensitive=False):
+def make_prediction(df, results, X, scaler, exclude_sensitive=False):
     """
     results is the already-built model
     X is an array of input values, assumed to already be in order
@@ -137,6 +137,12 @@ def make_prediction(df, results, X, exclude_sensitive=False):
         for col in SENSITIVE_COLS:
             feature_cols.remove(col)
 
+    feature_cols.extend(["region_Asia", "region_Central America and Caribbean", "region_European Union", "region_Middle East", "region_North America", "region_Oceania", "region_Rest of Europe", "region_South America"])
+
+    feature_cols.remove("Region")
+    feature_cols.remove("Life_expectancy")
+
     df_X = pd.DataFrame([X], columns=feature_cols)
+    df_X = scaler.transform(df_X)
     y = results.predict(df_X)
     return y

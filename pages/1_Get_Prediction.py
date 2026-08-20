@@ -82,12 +82,16 @@ if "model" in st.session_state.keys():
             ]
         )
 
+        st.write(new_data)
+
         life_pred = make_prediction(
             st.session_state["data"],
             st.session_state["model"],
             new_data,
+            st.session_state["scaler"],
             exclude_sensitive=st.session_state["exclude_sensitive"],
         )
+        st.write(life_pred)
 
 else:
     st.write("No model created. Use the button in the sidebar to create one.")
