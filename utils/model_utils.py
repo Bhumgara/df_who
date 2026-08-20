@@ -120,7 +120,7 @@ def create_model(df, exclude_sensitive=False):
 
     X = X.select_dtypes(include="number")
 
-    return results, X, stats_df, pred_test, y_test
+    return results, X, stats_df, pred_test, y_test, scaler
 
 
 def make_prediction(df, results, X, exclude_sensitive=False):
