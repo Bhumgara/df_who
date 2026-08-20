@@ -1,6 +1,5 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from utils.viz_utils import plot_correlation, plot_residuals, plot_actual_vs_predicted
 
