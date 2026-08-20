@@ -74,7 +74,7 @@ def init_sidebar():
         sensitive = st.checkbox(label="Exclude sensitive data?", value=True)
         if st.button(label="Rebuild model"):
             with st.spinner("Training model..."):
-                model, X, stats_df, pred_test, y_test = create_model(
+                model, X, stats_df, pred_test, y_test, scaler = create_model(
                     st.session_state["data"], exclude_sensitive=sensitive
                 )
 
@@ -87,3 +87,4 @@ def init_sidebar():
                 st.session_state["pred_test"] = pred_test
                 st.session_state["y_test"] = y_test
                 st.session_state["exclude_sensitive"] = sensitive
+                st.session_state["scaler"] = scaler
