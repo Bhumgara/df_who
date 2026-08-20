@@ -27,21 +27,13 @@ if "model" in st.session_state.keys():
         hiv = st.number_input(label="HIV incidents per 1000 population among 15-49 year-olds", format="%0.2f")
         thinness = st.number_input(label="Percentage of thinness among 10-19 year olds", format="%0.1f")
     if st.button(label="Predict life expectancy"):
-        new_data = {}
-        new_data["Year"] = year
+        new_data = [year]
         if include_sensitive:
-            new_data["Under_five_deaths"] = under_five_mort
-            new_data["Adult_mortality"] = adult_mort
-            new_data["Alcohol_consumption"] = alcohol
-            new_data["Hepatitis_B"] = hepatitis_b
-            new_data["Measles"] = measles
-            new_data["BMI"] = bmi
-            new_data["Diphtheria"] = diphtheria
-            new_data["Incidents_HIV"] = hiv
-        new_data["gdp"] = np.log(gdp)
-        new_data["population"] = population
-        new_data["schooling"] = schooling
-        new_data["developed"] = developed
+            new_data.extend(under_five_mort, adult_mort, alcohol, hepatitis_b, measles, bmi, diphtheria, hiv)
+        new_data.extend(np.log(gdp), population)
+        if include_sensitive:
+            new_data.append(thinness)
+        new_data.extend(schooling, developed)
             
 else:
     st.write("No model created. Use the button in the sidebar to create one.")
@@ -65,4 +57,4 @@ with st.sidebar:
             st.session_state["stats_df"] = stats_df
             st.session_state["pred_test"] = pred_test
             st.session_state["y_test"] = y_test
-            st.session_stats["include_sensitive"] = (not sensitive)
+            st.session_stats["exclude_sensitive"] = sensitive
