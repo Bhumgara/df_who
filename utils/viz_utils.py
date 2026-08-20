@@ -280,5 +280,69 @@ def run_full_analysis(filepath):
     }
 
 
+def model_comparison(
+    test_prediction_insensitive,
+    test_prediction_complex,
+    y_test_insensitive,
+    y_test_complex,
+    insensitive: bool,
+    dual_model: bool = False,
+):
+    if dual_model:
+        _, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+        for ax, pte, y_true, title in [
+            (axes[0], test_prediction_insensitive, y_test_insensitive, "Simple model"),
+            (axes[1], test_prediction_complex, y_test_complex, "Complex model"),
+        ]:
+            ax.scatter(y_true, pte, alpha=0.3)
+            lo = min(y_true.min(), pte.min()) - 1
+            hi = max(y_true.max(), pte.max()) + 1
+            ax.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
+            ax.set_xlabel("Actual life expectancy")
+            ax.set_ylabel("Predicted life expectancy")
+            ax.set_title(title)
+            ax.legend()
+
+        plt.tight_layout()
+        plt.show()
+    else:
+        if insensitive:
+            _, axes = plt.subplots(1, 1, figsize=(14, 5))
+
+            for ax, pte, y_true, title in [
+                (axes, test_prediction_complex, y_test_complex, "Complex model"),
+            ]:
+                ax.scatter(y_true, pte, alpha=0.3)
+                lo = min(y_true.min(), pte.min()) - 1
+                hi = max(y_true.max(), pte.max()) + 1
+                ax.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
+                ax.set_xlabel("Actual life expectancy")
+                ax.set_ylabel("Predicted life expectancy")
+                ax.set_title(title)
+                ax.legend()
+
+            plt.tight_layout()
+            plt.show()
+
+        else:
+            _, axes = plt.subplots(1, 1, figsize=(14, 5))
+
+            for ax, pte, y_true, title in [
+                (axes, test_prediction_insensitive, y_test_insensitive, "Simple model")
+            ]:
+                ax.scatter(y_true, pte, alpha=0.3)
+                lo = min(y_true.min(), pte.min()) - 1
+                hi = max(y_true.max(), pte.max()) + 1
+                ax.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
+                ax.set_xlabel("Actual life expectancy")
+                ax.set_ylabel("Predicted life expectancy")
+                ax.set_title(title)
+                ax.legend()
+
+            plt.tight_layout()
+            plt.show()
+
+
 if __name__ == "__main__":
     run_full_analysis(os.getenv("DATA_CSV"))
