@@ -1,7 +1,12 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-from utils.viz_utils import plot_correlation, plot_residuals, plot_actual_vs_predicted
+from utils.viz_utils import (
+    model_comparison,
+    plot_correlation,
+    plot_residuals,
+    plot_actual_vs_predicted,
+)
 
 from utils.layout import init_streamlit_state_values, init_sidebar
 
@@ -39,6 +44,28 @@ if "model" in st.session_state.keys():
         plt.figure(figsize=(16, 8)),
         plot_actual_vs_predicted([(st.session_state["pred_test"], st.session_state["y_test"])]),
     )
+
+    if st.session_state["dual_mode"]:
+        st.pyplot(
+            plt.figure(figsize=(16, 8)),
+            model_comparison(
+                test_prediction_1=st.session_state["pred_test"],
+                test_prediction_2=st.session_state["pred_test2"],
+                y_test_1=st.session_state["y_test"],
+                y_test_2=st.session_state["y_test2"],
+                dual_model=st.session_state["dual_mode"],
+            ),
+        )
+    else:
+        st.pyplot(
+            plt.figure(figsize=(16, 8)),
+            model_comparison(
+                test_prediction_1=st.session_state["pred_test"],
+                y_test_1=st.session_state["y_test"],
+            ),
+        )
+
+
 else:
     st.write("No model created. Use the button in the sidebar to create one.")
 

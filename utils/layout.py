@@ -118,3 +118,4 @@ def init_sidebar():
                     for key in SECOND_MODEL_KEYS:
                         if key in st.session_state:
                             del st.session_state[key]
+                st.session_state["dual_mode"] = dual_model

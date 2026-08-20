@@ -281,67 +281,42 @@ def run_full_analysis(filepath):
 
 
 def model_comparison(
-    test_prediction_insensitive,
-    test_prediction_complex,
-    y_test_insensitive,
-    y_test_complex,
-    insensitive: bool,
+    test_prediction_1,
+    y_test_1,
+    test_prediction_2=None,
+    y_test_2=None,
     dual_model: bool = False,
 ):
     if dual_model:
         _, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-        for ax, pte, y_true, title in [
-            (axes[0], test_prediction_insensitive, y_test_insensitive, "Simple model"),
-            (axes[1], test_prediction_complex, y_test_complex, "Complex model"),
+        for axes, test_prediction_1, y_test_1, title in [
+            (axes[0], test_prediction_1, y_test_1, "Simple model"),
+            (axes[1], test_prediction_2, y_test_2, "Complex model"),
         ]:
-            ax.scatter(y_true, pte, alpha=0.3)
-            lo = min(y_true.min(), pte.min()) - 1
-            hi = max(y_true.max(), pte.max()) + 1
-            ax.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
-            ax.set_xlabel("Actual life expectancy")
-            ax.set_ylabel("Predicted life expectancy")
-            ax.set_title(title)
-            ax.legend()
-
-        plt.tight_layout()
-        plt.show()
+            axes.scatter(y_test_1, test_prediction_1, alpha=0.3)
+            lo = min(y_test_1.min(), test_prediction_1.min()) - 1
+            hi = max(y_test_1.max(), test_prediction_1.max()) + 1
+            axes.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
+            axes.set_xlabel("Actual life expectancy")
+            axes.set_ylabel("Predicted life expectancy")
+            axes.set_title(title)
+            axes.legend()
     else:
-        if insensitive:
-            _, axes = plt.subplots(1, 1, figsize=(14, 5))
 
-            for ax, pte, y_true, title in [
-                (axes, test_prediction_complex, y_test_complex, "Complex model"),
-            ]:
-                ax.scatter(y_true, pte, alpha=0.3)
-                lo = min(y_true.min(), pte.min()) - 1
-                hi = max(y_true.max(), pte.max()) + 1
-                ax.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
-                ax.set_xlabel("Actual life expectancy")
-                ax.set_ylabel("Predicted life expectancy")
-                ax.set_title(title)
-                ax.legend()
+        _, axes = plt.plot()
+        title = "Complex model"
+        axes.scatter(y_test_1, test_prediction_1, alpha=0.3)
+        lo = min(y_test_1.min(), test_prediction_1.min()) - 1
+        hi = max(y_test_1.max(), test_prediction_1.max()) + 1
+        axes.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
+        axes.set_xlabel("Actual life expectancy")
+        axes.set_ylabel("Predicted life expectancy")
+        axes.set_title(title)
+        axes.legend()
 
-            plt.tight_layout()
-            plt.show()
-
-        else:
-            _, axes = plt.subplots(1, 1, figsize=(14, 5))
-
-            for ax, pte, y_true, title in [
-                (axes, test_prediction_insensitive, y_test_insensitive, "Simple model")
-            ]:
-                ax.scatter(y_true, pte, alpha=0.3)
-                lo = min(y_true.min(), pte.min()) - 1
-                hi = max(y_true.max(), pte.max()) + 1
-                ax.plot([lo, hi], [lo, hi], "r--", label="Perfect fit")
-                ax.set_xlabel("Actual life expectancy")
-                ax.set_ylabel("Predicted life expectancy")
-                ax.set_title(title)
-                ax.legend()
-
-            plt.tight_layout()
-            plt.show()
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == "__main__":
